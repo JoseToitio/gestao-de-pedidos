@@ -6,6 +6,8 @@ import IndicadorCard from "./components/IndicadorCard";
 import PedidoGrid from "./components/PedidoGrid";
 import { Box, Container, Typography } from "@mui/material";
 
+
+
 export default function Home() {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [indicador, setIndicador] = useState(0);

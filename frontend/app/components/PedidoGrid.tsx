@@ -30,13 +30,13 @@ export default function PedidoGrid({ pedidos }: PedidoGridProps) {
         </TableHead>
         <TableBody>
           {pedidos.map((pedido) => (
-            <TableRow key={pedido.id}>
+            <TableRow key={pedido.id} sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}>
               <TableCell>{pedido.cliente}</TableCell>
               <TableCell>R$ {pedido.valor.toFixed(2)}</TableCell>
               <TableCell>{pedido.descricao}</TableCell>
               <TableCell>{new Date(pedido.data_criacao).toLocaleDateString()}</TableCell>
               <TableCell>
-                <Link href={`/pedidos/editar/${pedido.id}`} passHref>
+                <Link href={`/editar/${pedido.id}`} passHref>
                   <Button variant="contained" color="primary" size="small">
                     Editar
                   </Button>
