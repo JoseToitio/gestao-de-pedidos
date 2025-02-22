@@ -5,3 +5,4 @@ authlib==0.15.4
 pymysql
 requests
 mysql-connector-python
+flask-cors

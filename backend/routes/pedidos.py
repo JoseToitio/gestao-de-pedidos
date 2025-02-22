@@ -23,7 +23,7 @@ def listar_pedidos():
         result.append({
             'id': pedido.id,
             'cliente': pedido.cliente,
-            'valor': str(pedido.valor),
+            'valor': float(pedido.valor),
             'descricao': pedido.descricao,
             'data_criacao': pedido.data_criacao
         })
@@ -35,7 +35,7 @@ def obter_pedido(id):
     return jsonify({
         'id': pedido.id,
         'cliente': pedido.cliente,
-        'valor': str(pedido.valor),
+        'valor': float(pedido.valor),
         'descricao': pedido.descricao,
         'data_criacao': pedido.data_criacao
     })
@@ -51,7 +51,7 @@ def atualizar_pedido(id):
     return jsonify({
         'id': pedido.id,
         'cliente': pedido.cliente,
-        'valor': str(pedido.valor),
+        'valor': float(pedido.valor),
         'descricao': pedido.descricao,
         'data_criacao': pedido.data_criacao
     })
