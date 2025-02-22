@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { getIndicador, getPedidos, Pedido } from "./data/mockPedidos";
 import IndicadorCard from "./components/IndicadorCard";
 import PedidoGrid from "./components/PedidoGrid";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
+import Link from "next/link";
 
 
 
@@ -22,6 +23,13 @@ export default function Home() {
       <Typography variant="h4" component="h1" gutterBottom color="black">
         Pedidos
       </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+        <Link href="/criarPedido" passHref>
+          <Button variant="contained" color="primary">
+            Criar Novo Pedido
+          </Button>
+        </Link>
+      </Box>
       <Box sx={{ mb: 4 }}>
         <IndicadorCard valor={indicador} />
       </Box>

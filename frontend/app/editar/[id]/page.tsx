@@ -5,6 +5,7 @@ import { atualizarPedido, getPedidoById, Pedido } from '@/app/data/mockPedidos';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation'
+import { Container, Typography } from '@mui/material';
 export default function EditarPedidoPage() {
   const params = useParams();
   const id = params.id as string;
@@ -30,9 +31,11 @@ export default function EditarPedidoPage() {
   if (!pedido) return <div>Carregando...</div>;
 
   return (
-    <div>
-      <h1>Editar Pedido</h1>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Typography variant="h4" component="h1" gutterBottom color="black">
+        Editar Pedido
+      </Typography>
       <PedidoForm initialData={pedido} onSubmit={handleSubmit} />
-    </div>
+    </Container>
   );
 }
