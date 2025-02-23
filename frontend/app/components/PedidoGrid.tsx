@@ -1,7 +1,9 @@
 'use client';
 
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import Link from 'next/link';
+import { excluirPedido } from '../data/api';
 
 interface Pedido {
   id: string;
@@ -16,6 +18,20 @@ interface PedidoGridProps {
 }
 
 export default function PedidoGrid({ pedidos }: PedidoGridProps) {
+  const queryClient = useQueryClient();
+
+  const {mutate} = useMutation({
+    mutationFn: excluirPedido,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        predicate: (query) => query.queryKey.includes('pedidos') || query.queryKey.includes('indicador'),
+      });
+    },
+  });
+
+  const handleExcluirPedido = (id: string) => {
+    mutate(id);
+  };
   return (
     <TableContainer component={Paper} sx={{ mt: 2 }}>
       <Table>
@@ -29,10 +45,10 @@ export default function PedidoGrid({ pedidos }: PedidoGridProps) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {pedidos.map((pedido) => (
+          {pedidos?.map((pedido) => (
             <TableRow key={pedido.id} sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}>
               <TableCell>{pedido.cliente}</TableCell>
-              <TableCell>R$ {pedido.valor.toFixed(2)}</TableCell>
+              <TableCell>R$ {pedido.valor?.toFixed(2)}</TableCell>
               <TableCell>{pedido.descricao}</TableCell>
               <TableCell>{new Date(pedido.data_criacao).toLocaleDateString()}</TableCell>
               <TableCell>
@@ -41,6 +57,15 @@ export default function PedidoGrid({ pedidos }: PedidoGridProps) {
                     Editar
                   </Button>
                 </Link>
+                <Button
+                  variant="contained"
+                  color="error"
+                  size="small"
+                  onClick={() => handleExcluirPedido(pedido.id)}
+                  sx={{ ml: 1 }}
+                >
+                  Excluir
+                </Button>
               </TableCell>
             </TableRow>
           ))}

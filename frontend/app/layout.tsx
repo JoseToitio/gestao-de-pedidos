@@ -1,21 +1,9 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+'use client'
+
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-export const metadata: Metadata = {
-  title: "Gestão de Pedidos",
-  description: "Sistema de gestão de pedidos com Next.js e Material UI",
-};
+import { QueryClientProvider } from "@tanstack/react-query";
+import queryClient from "./lib/react-query";
+import { useEffect } from "react";
 
 
 export default function RootLayout({
@@ -23,11 +11,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
+  useEffect(() => {
+    document.title = "Gestão de Pedidos";
+  }, []);
+
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        {children}
-      </body>
+      <QueryClientProvider client={queryClient}>
+        <body>
+          {children}
+        </body>
+      </QueryClientProvider>
     </html>
   );
 }

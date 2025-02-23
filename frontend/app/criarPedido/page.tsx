@@ -1,18 +1,37 @@
 'use client';
 
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 import PedidoForm from "../components/PedidoForm";
-import { criarPedido } from "../data/mockPedidos";
+import { criarPedido } from "../data/api";
+import { Alert, Container, Typography } from "@mui/material";
 
 export default function CriarPedidoPage() {
-  const handleSubmit = async (data: { cliente: string; valor: number; descricao: string }) => {
-    await criarPedido(data);
-    alert('Pedido criado com sucesso!');
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  const { mutate, isSuccess, isError } = useMutation({
+    mutationFn: criarPedido,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['pedidos'] });
+      setTimeout(() => {
+        router.push('/');
+      }, 3000)
+    },
+  });
+
+  const handleSubmit = (data: { cliente: string; valor: number; descricao: string }) => {
+    mutate(data);
   };
 
   return (
-    <div>
-      <h1>Criar Pedido</h1>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4, position: 'relative'}}>
+      {isSuccess && <Alert variant="filled" severity="success" sx={{position: 'absolute', right: 25,}}>Pedido criado com sucesso!</Alert>}
+      {isError && <Alert severity="error">Erro ao criar pedido.</Alert>}
+      <Typography variant="h4" component="h1" gutterBottom color="black">
+        Criar Pedido
+      </Typography>
       <PedidoForm onSubmit={handleSubmit} />
-    </div>
+    </Container>
   );
 }

@@ -1,38 +1,45 @@
 'use client';
 
 import PedidoForm from '@/app/components/PedidoForm';
-import { atualizarPedido, getPedidoById, Pedido } from '@/app/data/mockPedidos';
 import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { redirect } from 'next/navigation'
+import { Container, Typography } from '@mui/material';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { atualizarPedido, getPedidosById } from '@/app/data/api';
+import { useRouter } from "next/navigation";
+
 export default function EditarPedidoPage() {
   const params = useParams();
   const id = params.id as string;
+  const queryClient = useQueryClient();
+  const router = useRouter();
 
-  const [pedido, setPedido] = useState<Pedido | null>(null);
+  const { data: pedido, isLoading, isError } = useQuery({
+    queryKey: ['pedido', id],
+    queryFn: () => getPedidosById(id),
+  });
 
-  useEffect(() => {
-    getPedidoById(id).then((pedido) => {
-      if (pedido) {
-        setPedido(pedido);
-      }
-    });
-  }, [id]);
+  const {mutate} = useMutation({
+    mutationFn: (dadosAtualizados: { cliente: string; valor: number; descricao: string }) =>
+      atualizarPedido(id, dadosAtualizados),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['pedidos'] });
+      router.push('/');
+    },
+  });
 
-  const handleSubmit = async (data: { cliente: string; valor: number; descricao: string }) => {
-    if (pedido) {
-      await atualizarPedido(pedido.id, data);
-      alert('Pedido atualizado com sucesso!');
-      redirect('/')
-    }
+  const handleSubmit = (data: { cliente: string; valor: number; descricao: string }) => {
+    mutate(data);
   };
 
-  if (!pedido) return <div>Carregando...</div>;
+  if (isLoading) return <div>Carregando...</div>;
+  if (isError) return <div>Erro ao carregar o pedido.</div>;
 
   return (
-    <div>
-      <h1>Editar Pedido</h1>
+    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+      <Typography variant="h4" component="h1" gutterBottom color="black">
+        Editar Pedido
+      </Typography>
       <PedidoForm initialData={pedido} onSubmit={handleSubmit} />
-    </div>
+    </Container>
   );
 }
