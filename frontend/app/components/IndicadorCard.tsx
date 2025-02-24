@@ -4,7 +4,7 @@ import { Card, CardContent, Typography, Box } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 interface IndicadorCardProps {
   valor: {
-    media_pedidos: number
+    media_pedidos: number;
   };
 }
 
@@ -24,7 +24,7 @@ export default function IndicadorCard({ valor }: IndicadorCardProps) {
             component="div"
             sx={{ fontWeight: "bold", color: "#2b58b9" }}
           >
-             {valor.media_pedidos?.toFixed(2)}
+            {valor.media_pedidos?.toFixed(2)}
           </Typography>
         </Box>
       </CardContent>

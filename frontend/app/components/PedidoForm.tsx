@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { Button, TextField, Box, Card } from '@mui/material';
-import React, { useState } from 'react';
+import { Button, TextField, Box, Card } from "@mui/material";
+import React, { useState } from "react";
 
 interface PedidoFormProps {
   initialData?: {
@@ -9,13 +9,17 @@ interface PedidoFormProps {
     valor: number;
     descricao: string;
   };
-  onSubmit: (data: { cliente: string; valor: number; descricao: string }) => void;
+  onSubmit: (data: {
+    cliente: string;
+    valor: number;
+    descricao: string;
+  }) => void;
 }
 
 export default function PedidoForm({ initialData, onSubmit }: PedidoFormProps) {
-  const [cliente, setCliente] = useState(initialData?.cliente || '');
+  const [cliente, setCliente] = useState(initialData?.cliente || "");
   const [valor, setValor] = useState(initialData?.valor || 0);
-  const [descricao, setDescricao] = useState(initialData?.descricao || '');
+  const [descricao, setDescricao] = useState(initialData?.descricao || "");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,7 +45,7 @@ export default function PedidoForm({ initialData, onSubmit }: PedidoFormProps) {
         <TextField
           label="Valor"
           type="number"
-          value={valor || ''}
+          value={valor || ""}
           onChange={(e) => setValor(parseFloat(e.target.value))}
           required
         />

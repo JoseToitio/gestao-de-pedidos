@@ -7,18 +7,16 @@ import { getIndicador, getPedidos } from "./data/api";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
 
-
-
 export default function Home() {
-  const { data: pedidos = [], isLoading, isError} = useQuery({
-    queryKey: ['pedidos'],
+  const { data: pedidos = [] } = useQuery({
+    queryKey: ["pedidos"],
     queryFn: getPedidos,
   });
-  const { data: indicador} = useQuery({
-    queryKey: ['indicador'],
+  const { data: indicador } = useQuery({
+    queryKey: ["indicador"],
     queryFn: getIndicador,
-    initialData: { media_pedidos: 0 }
-  })
+    initialData: { media_pedidos: 0 },
+  });
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
       <Typography variant="h4" component="h1" gutterBottom color="black">
@@ -27,7 +25,7 @@ export default function Home() {
       <Box sx={{ mb: 4 }}>
         <IndicadorCard valor={indicador} />
       </Box>
-      <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+      <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
         <Link href="/criarPedido" passHref>
           <Button variant="contained" color="primary">
             Criar Novo Pedido

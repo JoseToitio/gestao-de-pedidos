@@ -1,9 +1,18 @@
-'use client';
+"use client";
 
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Button } from '@mui/material';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import Link from 'next/link';
-import { excluirPedido } from '../data/api';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Button,
+} from "@mui/material";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import Link from "next/link";
+import { excluirPedido } from "../data/api";
 
 interface Pedido {
   id: string;
@@ -20,11 +29,13 @@ interface PedidoGridProps {
 export default function PedidoGrid({ pedidos }: PedidoGridProps) {
   const queryClient = useQueryClient();
 
-  const {mutate} = useMutation({
+  const { mutate } = useMutation({
     mutationFn: excluirPedido,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        predicate: (query) => query.queryKey.includes('pedidos') || query.queryKey.includes('indicador'),
+        predicate: (query) =>
+          query.queryKey.includes("pedidos") ||
+          query.queryKey.includes("indicador"),
       });
     },
   });
@@ -36,21 +47,36 @@ export default function PedidoGrid({ pedidos }: PedidoGridProps) {
     <TableContainer component={Paper} sx={{ mt: 2 }}>
       <Table>
         <TableHead>
-          <TableRow sx={{ backgroundColor: '#1976d2' }}>
-            <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Cliente</TableCell>
-            <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Valor</TableCell>
-            <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Descrição</TableCell>
-            <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Data de Criação</TableCell>
-            <TableCell sx={{ color: 'white', fontWeight: 'bold' }}>Ações</TableCell>
+          <TableRow sx={{ backgroundColor: "#1976d2" }}>
+            <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+              Cliente
+            </TableCell>
+            <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+              Valor
+            </TableCell>
+            <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+              Descrição
+            </TableCell>
+            <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+              Data de Criação
+            </TableCell>
+            <TableCell sx={{ color: "white", fontWeight: "bold" }}>
+              Ações
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {pedidos?.map((pedido) => (
-            <TableRow key={pedido.id} sx={{ '&:hover': { backgroundColor: '#f5f5f5' } }}>
+            <TableRow
+              key={pedido.id}
+              sx={{ "&:hover": { backgroundColor: "#f5f5f5" } }}
+            >
               <TableCell>{pedido.cliente}</TableCell>
               <TableCell>R$ {pedido.valor?.toFixed(2)}</TableCell>
               <TableCell>{pedido.descricao}</TableCell>
-              <TableCell>{new Date(pedido.data_criacao).toLocaleDateString()}</TableCell>
+              <TableCell>
+                {new Date(pedido.data_criacao).toLocaleDateString()}
+              </TableCell>
               <TableCell>
                 <Link href={`/editar/${pedido.id}`} passHref>
                   <Button variant="contained" color="primary" size="small">
