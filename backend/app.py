@@ -1,7 +1,7 @@
 from flask import Flask
 from config import Config
-from models import db
-from routes.pedidos import pedidos_bp
+from models.pedido_model import db
+from routes.pedidos_routes import pedidos_bp
 from flask_cors import CORS
 
 app = Flask(__name__)

@@ -16,3 +16,12 @@ class Pedido(db.Model):
         self.cliente = cliente
         self.valor = valor
         self.descricao = descricao
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'cliente': self.cliente,
+            'valor': float(self.valor),
+            'descricao': self.descricao,
+            'data_criacao': self.data_criacao.strftime("%Y-%m-%d %H:%M:%S")  # Formata a data
+        }
